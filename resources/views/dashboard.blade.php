@@ -213,29 +213,39 @@
             </tbody>
         </table>
 
-        <!-- Form Tambah Detail Transaksi -->
-        <form action="/details" method="POST" class="mb-5">
-            @csrf
-            <h4 class="mb-3">Tambah Detail Transaksi</h4>
-            <div class="row mb-3">
-                <div class="col">
-                    <input type="number" name="transaction_id" class="form-control" placeholder="ID Transaksi" required>
-                </div>
-                <div class="col">
-                    <input type="number" name="product_id" class="form-control" placeholder="ID Produk" required>
-                </div>
-                <div class="col">
-                    <input type="number" name="quantity" class="form-control" placeholder="Jumlah" required>
-                </div>
-                <div class="col">
-                    <input type="number" name="sub_total" class="form-control" placeholder="Sub Total" required>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-warning">Tambah</button>
-                </div>
-            </div>
-        </form>
+      <!-- Form Tambah Detail Transaksi -->
+<form action="/details" method="POST" class="mb-5">
+    @csrf
+    <h4 class="mb-3">Tambah Detail Transaksi</h4>
+    <div class="row mb-3">
+        <div class="col">
+            <select name="transaction_id" class="form-control" required>
+                <option value="">Pilih Transaksi</option>
+                @foreach($transactions as $transaction)
+                    <option value="{{ $transaction->id }}">#{{ $transaction->id }} - {{ $transaction->date }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col">
+            <select name="product_id" class="form-control" required>
+                <option value="">Pilih Produk</option>
+                @foreach($products as $product)
+                    <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col">
+            <input type="number" name="quantity" class="form-control" placeholder="Jumlah" required>
+        </div>
+        <div class="col">
+            <input type="number" name="sub_total" class="form-control" placeholder="Sub Total" required>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-warning">Tambah</button>
+        </div>
     </div>
+</form>
+
 
      <!-- Modal Edit Detail Transaksi -->
 @foreach($details as $detail)

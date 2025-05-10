@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
 use App\Models\Transaction;
-use App\Models\TransactionDetail;
 use App\Models\Detail;
 
 // ===================== PRODUCT ROUTES ===================== //
@@ -46,20 +45,6 @@ Route::post('/transactions', function (Request $request) {
     return response()->json($transaction, 201);
 });
 
-// GET detail transaksi berdasarkan ID transaksi
-Route::get('/transactions/{id}/details', function ($id) {
-    return Detail::where('transaction_id', $id)->get();
-});
-
-// POST tambah detail transaksi
-Route::post('/transactions/{id}/details', function (Request $request, $id) {
-    $detail =Detail::create(array_merge(
-        $request->only(['product_id', 'quantity', 'subtotal']),
-        ['transaction_id' => $id]
-    ));
-    return response()->json($detail, 201);
-});
-
 // DELETE transaksi
 Route::delete('/transactions/{id}', function ($id) {
     Transaction::destroy($id);
@@ -71,7 +56,16 @@ Route::get('/details', function () {
     return Detail::all();
 });
 
-// GET semua detail transaksi
-Route::get('/transactions', function () {
-    return Transaction::all();
+// GET detail transaksi berdasarkan ID transaksi
+Route::get('/transactions/{id}/details', function ($id) {
+    return Detail::where('transaction_id', $id)->get();
+});
+
+// POST tambah detail transaksi
+Route::post('/transactions/{id}/details', function (Request $request, $id) {
+    $detail = Detail::create(array_merge(
+        $request->only(['product_id', 'quantity', 'subtotal']),
+        ['transaction_id' => $id]
+    ));
+    return response()->json($detail, 201);
 });
